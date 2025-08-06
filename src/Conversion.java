@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Conversion {
@@ -15,7 +16,7 @@ public class Conversion {
     public RatiosDeConversion obtenerTasasDeCambio(String pais_origen) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
 
-        URI direccion = URI.create("https://v6.exchangerate-api.com/v6/"+API_key+"/latest/"+pais_origen);
+        URI direccion = URI.create("https://v6.exchangerate-api.com/v6/" + API_key + "/latest/" + pais_origen);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(direccion)
@@ -35,11 +36,18 @@ public class Conversion {
     }
 
     public double ConvertirMoneda(String pais_origen, String pais_destino) throws IOException, InterruptedException {
-        System.out.println("Ingrese el valor en "+pais_origen+" que desea convertir en "+pais_destino+" : ");
-        double valorPorConvertir = scanner.nextDouble();
-        RatiosDeConversion ratios = obtenerTasasDeCambio(pais_origen);
-        double valorDeCambio = buscaTasaDeCambio(ratios,pais_destino);
-        double monedaConvertida = valorPorConvertir*valorDeCambio;
+        System.out.println("Ingrese el valor en " + pais_origen + " que desea convertir en " + pais_destino + " : ");
+        double monedaConvertida = 0;
+        try {
+            double valorPorConvertir = scanner.nextDouble();
+            RatiosDeConversion ratios = obtenerTasasDeCambio(pais_origen);
+            double valorDeCambio = buscaTasaDeCambio(ratios, pais_destino);
+            monedaConvertida  = valorPorConvertir * valorDeCambio;
+        } catch (InputMismatchException e) {
+            System.out.println("Monto no válido, ingrese un numero.");
+            scanner.next();
+            ConvertirMoneda(pais_origen, pais_destino);
+        }
         return monedaConvertida;
     }
 }
