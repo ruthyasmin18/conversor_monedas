@@ -38,7 +38,7 @@ Se utiliza [ExchangeRate-API](https://www.exchangerate-api.com/) para obtener ta
   - **Lenguaje:** Java 17+
   - **IDE sugerido:** IntelliJ IDEA / Eclipse / VS Code
   - **Consumo de API:** `HttpURLConnection` o `HttpClient` de Java
-  - **Parseo JSON:** [Gson (by Google)](https://github.com/google/gson)
+  - **Parseo JSON:** Biblioteca GSON (se debe agregar a las dependecias del proyecto)
   - **Entrada de datos:** Consola (Scanner)
 
 ## 📦 Dependencias
